@@ -51,7 +51,14 @@ def submission_password(request):
 
 class LinkInline(InlineFormSet):
     model = Link
-    fields=['link','description']
+    fields = ['link', 'description']
+    can_delete = False  # Hide delete checkboxes - empty links are auto-deleted
+
+    def get_queryset(self):
+        # Delete any links with empty link field when loading
+        qs = super().get_queryset()
+        qs.filter(link='').delete()
+        return qs
 
 class SubmissionForm(ModelForm):
     class Meta:
@@ -124,7 +131,10 @@ class SubmissionUpdateView(SubmissionPasswordRequiredMixin, UpdateWithInlinesVie
                 return super(SubmissionUpdateView, self).form_invalid(form)
 
 
-        return super(SubmissionUpdateView, self).form_valid(form)
+        response = super(SubmissionUpdateView, self).form_valid(form)
+        # Clean up empty links
+        self.object.link_set.filter(link='').delete()
+        return response
 
 
 @submission_password_required
