@@ -1,15 +1,22 @@
 import os
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = "changeme"
+# Import site config for security settings
+try:
+    from . import site_config
+except ImportError:
+    from . import site_config_example as site_config
+
+# Security settings - override these in site_config.py for production
+SECRET_KEY = getattr(site_config, 'SECRET_KEY', 'changeme')
+DEBUG = getattr(site_config, 'DEBUG', True)
+ALLOWED_HOSTS = getattr(site_config, 'ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": "dev.db",
     }
 }
-DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))

@@ -1,6 +1,12 @@
 # Site Configuration
 # Copy this file to site_config.py and customize for your memorial page
 
+# SECURITY SETTINGS - CHANGE THESE IN PRODUCTION!
+# Generate a new secret key: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+SECRET_KEY = "changeme"
+DEBUG = True
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 SITE_TITLE = "Memorial Page"
 SITE_SUBTITLE = "In Loving Memory"
 SITE_DESCRIPTION = "Add a description here"
