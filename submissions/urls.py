@@ -1,12 +1,16 @@
 from django.urls import path, re_path
 
-from .views import submission, SubmissionListView, SubmissionUpdateView, ImageCreateView, delete_image
+from .views import (
+    submission, submission_password, SubmissionListView,
+    SubmissionUpdateView, ImageCreateView, delete_image
+)
 from django.views.decorators.cache import cache_page
 
 
 urlpatterns = [
     path("", cache_page(60*15)(SubmissionListView.as_view()), name='home'),
     path("submit/", submission, name='submit'),
+    path("submit/password/", submission_password, name='submission-password'),
     path("edit/<int:pk>/", SubmissionUpdateView.as_view(), name='submission-edit'),
     path("edit/<int:pk>/upload_image/", ImageCreateView.as_view(), name='jfu-upload'),
     path("edit/<int:pk>/delete_image/", delete_image, name='jfu-delete'),

@@ -1,4 +1,5 @@
 import os
+from functools import wraps
 
 from django.conf import settings
 from django.urls import reverse
@@ -14,6 +15,39 @@ from datetime import datetime
 from django.contrib import messages
 from extra_views import InlineFormSet
 from extra_views.advanced import UpdateWithInlinesView
+
+
+def submission_password_required(view_func):
+    """Decorator that requires submission password to access a view."""
+    @wraps(view_func)
+    def wrapped(request, *args, **kwargs):
+        if not request.session.get('submission_unlocked'):
+            return HttpResponseRedirect(reverse('submission-password') + '?next=' + request.path)
+        return view_func(request, *args, **kwargs)
+    return wrapped
+
+
+class SubmissionPasswordRequiredMixin:
+    """Mixin for class-based views that require submission password."""
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.get('submission_unlocked'):
+            return HttpResponseRedirect(reverse('submission-password') + '?next=' + request.path)
+        return super().dispatch(request, *args, **kwargs)
+
+
+def submission_password(request):
+    """View to enter the submission password."""
+    error = None
+    if request.method == 'POST':
+        password = request.POST.get('password', '')
+        if password == settings.SUBMISSION_PASSWORD:
+            request.session['submission_unlocked'] = True
+            next_url = request.GET.get('next', reverse('submit'))
+            return HttpResponseRedirect(next_url)
+        else:
+            error = 'Incorrect password'
+
+    return render(request, 'submissions/password.html', {'error': error})
 
 class LinkInline(InlineFormSet):
     model = Link
@@ -53,7 +87,7 @@ class SubmissionForm(ModelForm):
 class SubmissionListView(ListView):
     queryset = Submission.objects.filter(accepted_at__isnull=False).order_by('-accepted_at')
 
-class SubmissionUpdateView(UpdateWithInlinesView):
+class SubmissionUpdateView(SubmissionPasswordRequiredMixin, UpdateWithInlinesView):
     model = Submission
     form_class = SubmissionForm
     inlines = [LinkInline]
@@ -88,6 +122,7 @@ class SubmissionUpdateView(UpdateWithInlinesView):
         return super(SubmissionUpdateView, self).form_valid(form)
 
 
+@submission_password_required
 def submission(request):
     sid = request.session.get('submission_id',None)
     if not sid or Submission.objects.get(pk=sid).submitted_at:
@@ -97,7 +132,7 @@ def submission(request):
         submitted_at__isnull=True)
     return HttpResponseRedirect(s.get_absolute_url())
 
-class ImageCreateView(CreateView):
+class ImageCreateView(SubmissionPasswordRequiredMixin, CreateView):
     model = Image
     fields = ['file']
 
@@ -111,6 +146,7 @@ class ImageCreateView(CreateView):
     def form_invalid(self, form):
         return HttpResponse('Not an Image', status=500)
 
+@submission_password_required
 def delete_image(request, pk):
     success = True
     try:

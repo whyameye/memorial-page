@@ -183,3 +183,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Password to access submission form (set via environment variable in production)
+SUBMISSION_PASSWORD = os.environ.get("SUBMISSION_PASSWORD", "changeme")
