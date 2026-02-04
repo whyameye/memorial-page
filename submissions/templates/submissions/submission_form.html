@@ -117,8 +117,11 @@ Dropzone.options.dropzoneFiles['init'] = function() {
     <div class="row mt-4">
       <div class="text-center">
         {% if not form.instance.submitted_at %}
+        <a href="{% url 'home' %}" class="btn btn-link text-muted me-2">Cancel</a>
         <input type="submit" class="btn btn-outline-secondary me-2" name="save" value="Save Draft"/>
         <input type="submit" class="btn btn-success" name="send" value="Submit"/>
+        {% else %}
+        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
         {% endif %}
       </div>
     </div>
