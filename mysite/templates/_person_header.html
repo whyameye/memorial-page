@@ -1,12 +1,12 @@
 {% load static %}
 <div class="container mb-4">
   <div class="card header-card p-4 text-center">
-    <h1 class="display-5 fw-bold mb-3"><a href="/">PAGE TITLE</a></h1>
+    <h1 class="display-5 fw-bold mb-3"><a href="/">{{ SITE_TITLE }}</a></h1>
     <div class="row justify-content-center">
       <div class="col-md-6 col-lg-4">
-        <h4 class="fw-light">We miss someone</h4>
-        <p class="opacity-75">add a subtitle</p>
-        <img src="{% static 'images/person.png' %}" class="img-fluid rounded-circle mb-3" style="max-width: 150px;"/>
+        <h4 class="fw-light">{{ SITE_SUBTITLE }}</h4>
+        {% if SITE_DESCRIPTION %}<p class="opacity-75">{{ SITE_DESCRIPTION }}</p>{% endif %}
+        <img src="{% static PERSON_IMAGE %}" class="img-fluid rounded-circle mb-3" style="max-width: 150px;"/>
       </div>
     </div>
     <div class="mt-3">

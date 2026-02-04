@@ -4,3 +4,6 @@
 node_modules/
 mysite/site_media/media
 .DS_Store
+
+# Site-specific config (copy from site_config.example.py)
+mysite/site_config.py

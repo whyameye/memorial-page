@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Memorial Page{% endblock %}</title>
+    <title>{% block title %}{{ SITE_TITLE|default:"Memorial Page" }}{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body { background-color: #f8f9fa; }
         .card { border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .header-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .header-card { background: linear-gradient(135deg, {{ HEADER_GRADIENT_START|default:"#667eea" }} 0%, {{ HEADER_GRADIENT_END|default:"#764ba2" }} 100%); color: white; }
         .header-card a { color: white; text-decoration: none; }
         .header-card h1 a:hover { opacity: 0.9; }
-        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; }
-        .btn-primary:hover { background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%); }
+        .btn-primary { background: linear-gradient(135deg, {{ HEADER_GRADIENT_START|default:"#667eea" }} 0%, {{ HEADER_GRADIENT_END|default:"#764ba2" }} 100%); border: none; }
+        .btn-primary:hover { opacity: 0.9; }
         .submission .card { margin-bottom: 2rem; }
         .divider { color: #dee2e6; margin: 2rem 0; }
     </style>
