@@ -26,3 +26,6 @@ REQUIRE_APPROVAL = False
 # Optional: Fixed background image (doesn't scroll with content)
 # Place image in static/dist/images/ and reference it here
 # BACKGROUND_IMAGE = "images/background.jpg"
+
+# Theme: "default", "clean-minimal", or "warm-elegant"
+THEME = "default"

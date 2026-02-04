@@ -102,7 +102,8 @@ Dropzone.options.dropzoneFiles['init'] = function() {
         {% csrf_token %}
       </div>
       <div class="col-12 col-md-5 offset-md-1 mt-3 mt-md-0">
-        <label class="form-label">Links &amp; Videos</label>
+        <label class="form-label">Links</label>
+        <p class="small text-muted mb-3">Share links to videos, social media posts, photo albums, articles, etc.</p>
         {% for links_formset in inlines %}
           {{links_formset.management_form}}
           {% for inline in links_formset %}
@@ -111,7 +112,7 @@ Dropzone.options.dropzoneFiles['init'] = function() {
             </div>
           {% endfor %}
         {% endfor %}
-        <p class="small text-muted mt-2">Vimeo and Youtube links will be embedded, like pictures</p>
+        <p class="small text-muted mt-2">YouTube and Vimeo links will be embedded automatically.</p>
       </div>
     </div>
     <div class="row mt-4">

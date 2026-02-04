@@ -20,4 +20,5 @@ def site_settings(request):
         'HEADER_GRADIENT_END': get_site_config('HEADER_GRADIENT_END', '#764ba2'),
         'REQUIRE_APPROVAL': get_site_config('REQUIRE_APPROVAL', False),
         'BACKGROUND_IMAGE': get_site_config('BACKGROUND_IMAGE', ''),
+        'THEME': get_site_config('THEME', 'default'),
     }

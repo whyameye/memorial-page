@@ -31,8 +31,8 @@ class Image(models.Model):
 
 class Link(models.Model):
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
-    link = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, null=True)
+    link = models.CharField(max_length=255, verbose_name="URL", help_text="Any link: video, social media, photo album, article")
+    description = models.CharField(max_length=255, null=True, blank=True, verbose_name="Caption", help_text="Optional caption for this link")
 
     embed = models.TextField(null=True,blank=True)
 

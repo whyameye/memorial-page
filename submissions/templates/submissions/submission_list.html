@@ -8,9 +8,7 @@
     <p class="text-center divider"><i class="bi bi-three-dots"></i></p>
     {% endif %}
     <div class="submission">
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
-          <div class="card p-4">
+      <div class="card p-4">
             {% if submission.current_files %}
               <div id="carousel-{{submission.pk}}" class="carousel slide mb-3" data-bs-ride="carousel">
                 <div class="carousel-inner rounded">
@@ -57,8 +55,6 @@
               {% if submission.text %}{{ submission.text | markdown }}{% endif %}
               <p class="text-muted fst-italic mt-3 mb-0">— {{submission.name}}</p>
             </div>
-          </div>
-        </div>
       </div>
     </div>
     {% endfor %}

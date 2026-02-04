@@ -1,4 +1,38 @@
 {% load static %}
+{% if THEME == "clean-minimal" %}
+<!-- Clean Minimal Theme Header -->
+<div class="header-section text-center mb-5">
+  <div class="container">
+    <img src="{% static PERSON_IMAGE %}" class="img-fluid mb-4" style="max-width: 120px;"/>
+    <h1><a href="/">{{ SITE_TITLE }}</a></h1>
+    <p class="subtitle mb-1">{{ SITE_SUBTITLE }}</p>
+    {% if SITE_DESCRIPTION %}<p class="description">{{ SITE_DESCRIPTION }}</p>{% endif %}
+    <div class="mt-4">
+      <a href="{% url 'submit' %}" class="btn btn-primary">
+        Submit Story or Pictures
+      </a>
+    </div>
+  </div>
+</div>
+
+{% elif THEME == "warm-elegant" %}
+<!-- Warm Elegant Theme Header -->
+<div class="header-section text-center mb-5">
+  <div class="container">
+    <img src="{% static PERSON_IMAGE %}" class="img-fluid mb-4" style="max-width: 140px;"/>
+    <h1 class="mb-2"><a href="/">{{ SITE_TITLE }}</a></h1>
+    <p class="subtitle mb-2">{{ SITE_SUBTITLE }}</p>
+    {% if SITE_DESCRIPTION %}<p class="description mb-0">{{ SITE_DESCRIPTION }}</p>{% endif %}
+    <div class="mt-4">
+      <a href="{% url 'submit' %}" class="btn btn-primary">
+        <i class="bi bi-pen me-2"></i>Share a Memory
+      </a>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<!-- Default Theme Header -->
 <div class="container mb-4">
   <div class="card header-card p-4 text-center">
     <h1 class="display-5 fw-bold mb-3"><a href="/">{{ SITE_TITLE }}</a></h1>
@@ -16,4 +50,4 @@
     </div>
   </div>
 </div>
-
+{% endif %}

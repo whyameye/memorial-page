@@ -52,6 +52,7 @@ def submission_password(request):
 class LinkInline(InlineFormSet):
     model = Link
     fields = ['link', 'description']
+    extra = 1
     can_delete = False  # Hide delete checkboxes - empty links are auto-deleted
 
     def get_queryset(self):

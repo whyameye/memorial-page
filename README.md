@@ -65,9 +65,12 @@ REQUIRE_APPROVAL = False  # True = must approve in admin, False = appears immedi
 # Optional: Fixed background image
 BACKGROUND_IMAGE = "images/background.jpg"
 
-# Optional: Custom header colors
+# Optional: Custom header colors (default theme only)
 HEADER_GRADIENT_START = "#667eea"
 HEADER_GRADIENT_END = "#764ba2"
+
+# Theme: "default", "clean-minimal", or "warm-elegant"
+THEME = "default"
 ```
 
 ### Generating a Secret Key
@@ -86,15 +89,15 @@ Or add to `site_config.py` (note: this file is gitignored for security).
 
 ## Design Themes
 
-Three design branches are available:
+Three themes are available, configured via `THEME` in `site_config.py`:
 
-- `master` - Simple Bootstrap 5 with purple gradient header
-- `design/clean-minimal` - White background, Inter font, minimal shadows
-- `design/warm-elegant` - Cream tones, Playfair Display serif headings
+- `default` - Simple Bootstrap 5 with purple gradient header (customizable colors)
+- `clean-minimal` - White background, Inter font, minimal shadows
+- `warm-elegant` - Cream tones, Playfair Display serif headings
 
-Switch themes:
-```bash
-git checkout design/warm-elegant  # or design/clean-minimal
+Set theme in `site_config.py`:
+```python
+THEME = "warm-elegant"  # or "clean-minimal", or "default"
 ```
 
 ## Administration
