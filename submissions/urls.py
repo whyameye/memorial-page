@@ -1,15 +1,14 @@
-from django.conf.urls import patterns, include, url
+from django.urls import path, re_path
 
-from views import submission, SubmissionListView, SubmissionUpdateView, ImageCreateView, delete_image
+from .views import submission, SubmissionListView, SubmissionUpdateView, ImageCreateView, delete_image
 from django.views.decorators.cache import cache_page
 
 
-urlpatterns = patterns(
-    "",
-    url(r"^$", cache_page(60*15)(SubmissionListView.as_view()), name='home'),
-    url(r"^submit/", submission, name='submit'),
-    url(r"^edit/(?P<pk>[0-9]+)/$", SubmissionUpdateView.as_view(), name='submission-edit'),
-    url(r"^edit/(?P<pk>[0-9]+)/upload_image/$", ImageCreateView.as_view(), name='jfu-upload'),
-    url(r"^edit/(?P<pk>[0-9]+)/delete_image/$", delete_image, name='jfu-delete'),
-    url(r"^edit/(?P<pk>[0-9]+)/links/$", delete_image, name='link-inlines'),
-)
+urlpatterns = [
+    path("", cache_page(60*15)(SubmissionListView.as_view()), name='home'),
+    path("submit/", submission, name='submit'),
+    path("edit/<int:pk>/", SubmissionUpdateView.as_view(), name='submission-edit'),
+    path("edit/<int:pk>/upload_image/", ImageCreateView.as_view(), name='jfu-upload'),
+    path("edit/<int:pk>/delete_image/", delete_image, name='jfu-delete'),
+    path("edit/<int:pk>/links/", delete_image, name='link-inlines'),
+]

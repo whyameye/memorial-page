@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 import micawber
 
 class Submission(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     submitted_at = models.DateTimeField(null=True, blank=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
-    accepted_by = models.ForeignKey(User, null=True, blank=True, related_name='accepted_submissions')
+    accepted_by = models.ForeignKey(User, null=True, blank=True, related_name='accepted_submissions', on_delete=models.SET_NULL)
     message = models.TextField(blank=True, null=True, help_text='If you\'d like, leave a private message to partner and family (not public)')
     name = models.CharField(max_length=200,blank=True, null=True,
             help_text="<b>Name, Location</b> would be ideal")
@@ -14,24 +15,22 @@ class Submission(models.Model):
 
     text = models.TextField(blank=True, help_text='A story about how he touched your life, or anything else you want to share. <small>(markdown formatting available)</small>')
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('submission-edit', tuple(), {'pk': self.id,},)
+        return reverse('submission-edit', kwargs={'pk': self.id})
 
     @property
     def current_files(self):
         return [x for x in self.image_set.all() if x.file]
 
-    def __unicode__(self):
-        return u'Submission by %s (%s)' % (self.name, (self.text or
-            '')[:20],)
+    def __str__(self):
+        return 'Submission by %s (%s)' % (self.name, (self.text or '')[:20])
 
 class Image(models.Model):
-    submission = models.ForeignKey(Submission)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
     file = models.ImageField()
 
 class Link(models.Model):
-    submission = models.ForeignKey(Submission)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
     link = models.CharField(max_length=255)
     description = models.CharField(max_length=255, null=True)
 
@@ -41,7 +40,7 @@ class Link(models.Model):
         providers = micawber.bootstrap_basic()
         try:
             self.embed = providers.request(self.link)['html']
-        except micawber.ProviderException,e:
+        except micawber.ProviderException as e:
             self.embed = None
-        super(Link,self).save(*args, **kwargs)
+        super(Link, self).save(*args, **kwargs)
 

@@ -1,14 +1,14 @@
 import os
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from models import Submission, Image, Link
+from .models import Submission, Image, Link
 from django.forms.models import ModelForm, inlineformset_factory
-from django.forms.util import ErrorList
+from django.forms.utils import ErrorList
 from django import forms
 from datetime import datetime
 from django.contrib import messages
