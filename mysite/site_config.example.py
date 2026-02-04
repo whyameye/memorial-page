@@ -16,3 +16,7 @@ REQUIRE_APPROVAL = False
 # Optional: Custom colors (CSS values)
 # HEADER_GRADIENT_START = "#667eea"
 # HEADER_GRADIENT_END = "#764ba2"
+
+# Optional: Fixed background image (doesn't scroll with content)
+# Place image in static/dist/images/ and reference it here
+# BACKGROUND_IMAGE = "images/background.jpg"
