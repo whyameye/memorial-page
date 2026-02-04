@@ -9,6 +9,10 @@ SITE_DESCRIPTION = "Add a description here"
 # Place your image in static/dist/images/ and reference it here
 PERSON_IMAGE = "images/person.png"
 
+# If True, submissions must be approved in admin before appearing
+# If False, submissions appear immediately after submit (since form is password protected)
+REQUIRE_APPROVAL = False
+
 # Optional: Custom colors (CSS values)
 # HEADER_GRADIENT_START = "#667eea"
 # HEADER_GRADIENT_END = "#764ba2"

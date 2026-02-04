@@ -85,7 +85,12 @@ class SubmissionForm(ModelForm):
 
 
 class SubmissionListView(ListView):
-    queryset = Submission.objects.filter(accepted_at__isnull=False).order_by('-accepted_at')
+    def get_queryset(self):
+        from mysite.context_processors import get_site_config
+        if get_site_config('REQUIRE_APPROVAL', False):
+            return Submission.objects.filter(accepted_at__isnull=False).order_by('-accepted_at')
+        else:
+            return Submission.objects.filter(submitted_at__isnull=False).order_by('-submitted_at')
 
 class SubmissionUpdateView(SubmissionPasswordRequiredMixin, UpdateWithInlinesView):
     model = Submission
@@ -160,6 +165,27 @@ def delete_image(request, pk):
         success = False
 
     return HttpResponse(  'ok, gone' )
+
+
+@submission_password_required
+def delete_submission(request, pk):
+    """Delete a submission if it belongs to the current session."""
+    try:
+        submission = Submission.objects.get(pk=pk)
+        if request.session.get('submission_id') == submission.pk:
+            # Delete associated images
+            for image in submission.image_set.all():
+                try:
+                    os.unlink(image.file.path)
+                except:
+                    pass
+            submission.delete()
+            # Clear session
+            del request.session['submission_id']
+            messages.success(request, 'Your submission has been deleted.')
+    except Submission.DoesNotExist:
+        pass
+    return HttpResponseRedirect('/')
 
 
 def LinkView(InlineFormSetView):
