@@ -129,13 +129,14 @@ class SubmissionUpdateView(SubmissionPasswordRequiredMixin, UpdateWithInlinesVie
 
 @submission_password_required
 def submission(request):
-    sid = request.session.get('submission_id',None)
-    if not sid or Submission.objects.get(pk=sid).submitted_at:
-        sid = Submission.objects.create().pk
-    request.session['submission_id'] = sid
-    s, created = Submission.objects.get_or_create(pk=sid,
-        submitted_at__isnull=True)
-    return HttpResponseRedirect(s.get_absolute_url())
+    sid = request.session.get('submission_id', None)
+    existing = None
+    if sid:
+        existing = Submission.objects.filter(pk=sid, submitted_at__isnull=True).first()
+    if not existing:
+        existing = Submission.objects.create()
+        request.session['submission_id'] = existing.pk
+    return HttpResponseRedirect(existing.get_absolute_url())
 
 class ImageCreateView(SubmissionPasswordRequiredMixin, CreateView):
     model = Image
