@@ -7,6 +7,9 @@ SECRET_KEY = "changeme"
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+# Password to access the submission form (share with family/friends)
+SUBMISSION_PASSWORD = "changeme"
+
 SITE_TITLE = "Memorial Page"
 SITE_SUBTITLE = "In Loving Memory"
 SITE_DESCRIPTION = "Add a description here"

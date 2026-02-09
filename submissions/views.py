@@ -121,7 +121,14 @@ class SubmissionUpdateView(SubmissionPasswordRequiredMixin, UpdateWithInlinesVie
                 self.object.submitted_at = datetime.now()
             self.object.save()
             if self.object.name and (self.object.text or self.object.current_files):
-                messages.success(self.request, 'Thank you. A moderator will publish your submission as soon as possible!')
+                from mysite.context_processors import get_site_config
+                if get_site_config('REQUIRE_APPROVAL', False):
+                    messages.success(self.request, 'Thank you! A moderator will publish your submission soon.')
+                else:
+                    messages.success(self.request, 'Thank you for your submission!')
+                # Clear session so user can make another submission
+                if 'submission_id' in self.request.session:
+                    del self.request.session['submission_id']
                 return HttpResponseRedirect('/')
             else:
                 error = form._errors.setdefault('name', ErrorList())

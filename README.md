@@ -25,9 +25,6 @@ pip install -r requirements.txt
 # Set up the database
 ./manage.py migrate
 
-# Collect static files
-./manage.py collectstatic --noinput
-
 # Create admin user
 ./manage.py createsuperuser
 
@@ -55,9 +52,8 @@ SITE_DESCRIPTION = "Share your favorite memories"
 # Person's photo (place in static/dist/images/)
 PERSON_IMAGE = "images/john.jpg"
 
-# Password for submission form
-# Set via environment variable: export SUBMISSION_PASSWORD="secret"
-# Or set in site_config.py (not recommended for production)
+# Password for submission form (share with family/friends)
+SUBMISSION_PASSWORD = "your-secret-password"
 
 # Optional: Require admin approval before submissions appear
 REQUIRE_APPROVAL = False  # True = must approve in admin, False = appears immediately
@@ -78,14 +74,6 @@ THEME = "default"
 ```bash
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 ```
-
-### Setting the Submission Password
-
-```bash
-export SUBMISSION_PASSWORD="your-secret-password"
-```
-
-Or add to `site_config.py` (note: this file is gitignored for security).
 
 ## Design Themes
 
@@ -124,13 +112,7 @@ If `REQUIRE_APPROVAL = True`, submissions won't appear until approved:
 
 ## Adding Images
 
-Place images in `static/dist/images/` then run:
-
-```bash
-./manage.py collectstatic --noinput
-```
-
-Reference them in `site_config.py`:
+Place images in `static/dist/images/` and reference them in `site_config.py`:
 ```python
 PERSON_IMAGE = "images/person.jpg"
 BACKGROUND_IMAGE = "images/background.jpg"
@@ -145,31 +127,16 @@ BACKGROUND_IMAGE = "images/background.jpg"
    ALLOWED_HOSTS = ['yourdomain.com']
    ```
 
-2. **Set submission password:**
-   ```bash
-   export SUBMISSION_PASSWORD="share-this-with-family"
-   ```
+2. **Set submission password** in `site_config.py` (share with family/friends)
 
-3. **Use a production database** (PostgreSQL recommended):
-   ```python
-   # In settings.py or site_config.py
-   DATABASES = {
-       'default': {
-           'ENGINE': 'django.db.backends.postgresql',
-           'NAME': 'memorial',
-           'USER': 'dbuser',
-           'PASSWORD': 'dbpass',
-           'HOST': 'localhost',
-       }
-   }
-   ```
+3. **Database:** SQLite (the default) is fine for a small memorial site. Only switch to PostgreSQL if you expect high traffic or many concurrent users.
 
 4. **Collect static files:**
    ```bash
    ./manage.py collectstatic --noinput
    ```
 
-5. **Run with gunicorn:**
+5. **Run with a production server** (gunicorn, not the Django dev server):
    ```bash
    gunicorn mysite.wsgi:application
    ```
