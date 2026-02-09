@@ -7,3 +7,6 @@ mysite/site_media/media
 
 # Site-specific config (copy from site_config.example.py)
 mysite/site_config.py
+
+# Site-specific images (person photo, background, etc.)
+static/dist/images/
