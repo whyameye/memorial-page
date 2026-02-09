@@ -8,7 +8,7 @@ class Submission(models.Model):
     submitted_at = models.DateTimeField(null=True, blank=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
     accepted_by = models.ForeignKey(User, null=True, blank=True, related_name='accepted_submissions', on_delete=models.SET_NULL)
-    message = models.TextField(blank=True, null=True, verbose_name='Private message to family (optional, not public)')
+    message = models.TextField(blank=True, null=True, verbose_name='Private message (optional, not public)')
     name = models.CharField(max_length=200, blank=True, null=True, verbose_name='Name (required)')
     email = models.CharField(max_length=200, blank=True, null=True, verbose_name='Email (optional, not public)')
 
