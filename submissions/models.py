@@ -19,7 +19,7 @@ class Submission(models.Model):
 
     @property
     def current_files(self):
-        return [x for x in self.image_set.all() if x.file]
+        return [x for x in self.image_set.all().order_by('order', 'id') if x.file]
 
     def __str__(self):
         return 'Submission by %s (%s)' % (self.name, (self.text or '')[:20])
@@ -27,6 +27,7 @@ class Submission(models.Model):
 class Image(models.Model):
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
     file = models.ImageField()
+    order = models.PositiveIntegerField(default=0)
 
 class Link(models.Model):
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE)

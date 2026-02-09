@@ -21,4 +21,8 @@ def site_settings(request):
         'REQUIRE_APPROVAL': get_site_config('REQUIRE_APPROVAL', False),
         'BACKGROUND_IMAGE': get_site_config('BACKGROUND_IMAGE', ''),
         'THEME': get_site_config('THEME', 'default'),
+        'CONTACT_EMAIL_USER': get_site_config('CONTACT_EMAIL', '').split('@')[0] if get_site_config('CONTACT_EMAIL', '') else '',
+        'CONTACT_EMAIL_DOMAIN': get_site_config('CONTACT_EMAIL', '').split('@')[1] if '@' in get_site_config('CONTACT_EMAIL', '') else '',
+        'FOOTER_TEXT': get_site_config('FOOTER_TEXT', ''),
+        'CONTACT_PROMPT': get_site_config('CONTACT_PROMPT', 'Questions?'),
     }

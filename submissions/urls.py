@@ -2,7 +2,8 @@ from django.urls import path, re_path
 
 from .views import (
     submission, submission_password, SubmissionListView,
-    SubmissionUpdateView, ImageCreateView, delete_image, delete_submission
+    SubmissionUpdateView, ImageCreateView, delete_image, delete_submission,
+    reorder_images
 )
 urlpatterns = [
     path("", SubmissionListView.as_view(), name='home'),  # TODO: add cache_page(60*15) for production
@@ -12,5 +13,6 @@ urlpatterns = [
     path("edit/<int:pk>/upload_image/", ImageCreateView.as_view(), name='jfu-upload'),
     path("edit/<int:pk>/delete_image/", delete_image, name='jfu-delete'),
     path("edit/<int:pk>/delete/", delete_submission, name='submission-delete'),
+    path("edit/<int:pk>/reorder_images/", reorder_images, name='reorder-images'),
     path("edit/<int:pk>/links/", delete_image, name='link-inlines'),
 ]

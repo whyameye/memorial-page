@@ -5,6 +5,7 @@
 
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'css/dropzone.css' %}" />
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
   <style>
     .form-group { margin-bottom: 1.5rem; }
     .dropzone .dz-remove {
@@ -50,6 +51,12 @@
       font-size: 12px;
       margin-top: 5px;
     }
+    .dropzone .dz-preview {
+      cursor: grab;
+    }
+    .dropzone .dz-preview.sortable-ghost {
+      opacity: 0.4;
+    }
   </style>
 {% endblock %}
 
@@ -85,6 +92,10 @@ Dropzone.options.dropzoneFiles['removedfile'] = function(file) {
 };
 Dropzone.options.dropzoneFiles['success'] = function(file, response) {
   file.removeLink = response.removeLink;
+  file.imageId = response.imageId;
+  if (file.previewElement) {
+    file.previewElement.dataset.imageId = response.imageId;
+  }
 };
 Dropzone.options.dropzoneFiles['init'] = function() {
   var file = null;
@@ -95,6 +106,7 @@ Dropzone.options.dropzoneFiles['init'] = function() {
       size: "{{ file.file.size}}",
       type: "image/jpeg",
       removeLink: "{% url 'jfu-delete' pk=file.pk %}",
+      imageId: {{ file.pk }},
       status: Dropzone.SUCCESS,
       upload: {progress: 100, bytesSent: {{file.file.size}}, total: {{file.file.size}}},
       accepted: true
@@ -102,9 +114,37 @@ Dropzone.options.dropzoneFiles['init'] = function() {
     this.options.addedfile.call(this, file);
     this.options.thumbnail.call(this,file, '{{file.file.url}}');
     this.options.complete.call(this,file, file.upload.progress, file.upload.bytesSent);
+    if (file.previewElement) {
+      file.previewElement.dataset.imageId = file.imageId;
+    }
     this.files.push(file);
   {% endfor %}
 }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var dzEl = document.getElementById('dropzone-files');
+  if (!dzEl) return;
+  Sortable.create(dzEl, {
+    draggable: '.dz-preview',
+    ghostClass: 'sortable-ghost',
+    animation: 150,
+    onEnd: function() {
+      var previews = dzEl.querySelectorAll('.dz-preview[data-image-id]');
+      var ids = Array.prototype.map.call(previews, function(el) {
+        return parseInt(el.dataset.imageId);
+      });
+      fetch("{% url 'reorder-images' pk=form.instance.pk %}", {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ids)
+      });
+    }
+  });
+});
 </script>
 
 <div class="card p-4">

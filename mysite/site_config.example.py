@@ -32,3 +32,10 @@ REQUIRE_APPROVAL = False
 
 # Theme: "default", "clean-minimal", or "warm-elegant"
 THEME = "default"
+
+# Footer text (supports HTML)
+FOOTER_TEXT = "Photo uploads and texts by their respective authors."
+
+# Contact email (displayed in footer, obfuscated against spam bots)
+# CONTACT_EMAIL = "someone@example.com"
+# CONTACT_PROMPT = "Questions?"

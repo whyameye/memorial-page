@@ -94,13 +94,15 @@
                     <div class="ratio ratio-16x9">
                       {{link.embed|safe}}
                     </div>
+                    {% if link.description %}
                     <div class="card-footer text-muted">
                       {{link.description}}
                     </div>
+                    {% endif %}
                   {% else %}
                     <div class="card-body">
                       <i class="bi bi-link-45deg me-1"></i>
-                      <a href="{{link.link}}" target="_blank">{{link.description}}</a>
+                      <a href="{{link.link}}" target="_blank">{{link.description|default:link.link}}</a>
                     </div>
                   {% endif %}
                 </div>

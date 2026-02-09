@@ -1,3 +1,44 @@
 {% load i18n %}
 
-&copy; cc-by-sa Some people; Photo Uploads and Texts by their respective authors.
+{% if THEME == "clean-minimal" %}
+<div class="text-center" style="background-color: #fafafa; border-top: 1px solid #e5e7eb; padding: 2rem 0; margin-top: 2rem; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #6b7280;">
+  <div class="container">
+    {{ FOOTER_TEXT|safe }}
+    {% if CONTACT_EMAIL_USER %}
+    <br>{{ CONTACT_PROMPT }} <a href="#" class="email-link" data-u="{{ CONTACT_EMAIL_USER }}" data-d="{{ CONTACT_EMAIL_DOMAIN }}"></a>
+    {% endif %}
+  </div>
+</div>
+
+{% elif THEME == "warm-elegant" %}
+<div class="text-center" style="background: linear-gradient(0deg, #f5f0eb 0%, #faf8f5 100%); border-top: 1px solid #e8e2db; padding: 2rem 0; margin-top: 2rem; font-family: 'Source Sans 3', sans-serif; font-size: 0.85rem; color: #9a8f88;">
+  <div class="container">
+    {{ FOOTER_TEXT|safe }}
+    {% if CONTACT_EMAIL_USER %}
+    <br>{{ CONTACT_PROMPT }} <a href="#" class="email-link" data-u="{{ CONTACT_EMAIL_USER }}" data-d="{{ CONTACT_EMAIL_DOMAIN }}"></a>
+    {% endif %}
+  </div>
+</div>
+
+{% else %}
+<div class="container mt-2 mb-4">
+  <div class="card text-center" style="padding: 1.5rem; font-size: 0.85rem; color: #6c757d;">
+    {{ FOOTER_TEXT|safe }}
+    {% if CONTACT_EMAIL_USER %}
+    <br>{{ CONTACT_PROMPT }} <a href="#" class="email-link" data-u="{{ CONTACT_EMAIL_USER }}" data-d="{{ CONTACT_EMAIL_DOMAIN }}"></a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+{% if CONTACT_EMAIL_USER %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('a.email-link[data-u]').forEach(function(el) {
+    var addr = el.dataset.u + '@' + el.dataset.d;
+    el.href = 'mail' + 'to:' + addr;
+    el.textContent = addr;
+  });
+});
+</script>
+{% endif %}

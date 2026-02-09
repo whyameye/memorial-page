@@ -1,3 +1,4 @@
+import json
 import os
 from functools import wraps
 
@@ -164,9 +165,11 @@ class ImageCreateView(SubmissionPasswordRequiredMixin, CreateView):
     fields = ['file']
 
     def form_valid(self, form):
-        form.instance.submission = Submission.objects.get(pk=self.kwargs['pk'], submitted_at__isnull=True)
+        sub = Submission.objects.get(pk=self.kwargs['pk'], submitted_at__isnull=True)
+        form.instance.submission = sub
+        form.instance.order = sub.image_set.count()
         self.object = form.save()
-        data = {'status': 'success', 'removeLink': reverse('jfu-delete', kwargs={'pk': self.object.pk})}
+        data = {'status': 'success', 'removeLink': reverse('jfu-delete', kwargs={'pk': self.object.pk}), 'imageId': self.object.pk}
         response = JsonResponse(data)
         return response
 
@@ -208,6 +211,23 @@ def delete_submission(request, pk):
     except Submission.DoesNotExist:
         pass
     return HttpResponseRedirect('/')
+
+
+@submission_password_required
+def reorder_images(request, pk):
+    """Reorder images for a submission via JSON array of image IDs."""
+    if request.method != 'POST':
+        return HttpResponse('Method not allowed', status=405)
+    if request.session.get('submission_id') != pk:
+        return HttpResponse('Forbidden', status=403)
+    try:
+        image_ids = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return HttpResponse('Invalid JSON', status=400)
+    submission = Submission.objects.get(pk=pk)
+    for order, image_id in enumerate(image_ids):
+        submission.image_set.filter(pk=image_id).update(order=order)
+    return JsonResponse({'status': 'ok'})
 
 
 def LinkView(InlineFormSetView):
