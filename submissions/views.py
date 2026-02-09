@@ -104,6 +104,7 @@ class SubmissionUpdateView(SubmissionPasswordRequiredMixin, UpdateWithInlinesVie
     model = Submission
     form_class = SubmissionForm
     inlines = [LinkInline]
+    success_url = '/'
 
     def get_queryset(self):
         base_qs = super(SubmissionUpdateView, self).get_queryset()
@@ -117,26 +118,28 @@ class SubmissionUpdateView(SubmissionPasswordRequiredMixin, UpdateWithInlinesVie
     def form_valid(self, form):
         if 'send' in self.request.POST:
             self.object = form.save()
-            if self.object.name:
-                self.object.submitted_at = datetime.now()
-            self.object.save()
-            if self.object.name and (self.object.text or self.object.current_files):
-                from mysite.context_processors import get_site_config
-                if get_site_config('REQUIRE_APPROVAL', False):
-                    messages.success(self.request, 'Thank you! A moderator will publish your submission soon.')
-                else:
-                    messages.success(self.request, 'Thank you for your submission!')
-                # Clear session so user can make another submission
-                if 'submission_id' in self.request.session:
-                    del self.request.session['submission_id']
-                return HttpResponseRedirect('/')
-            else:
+            # Validate required fields
+            if not self.object.name:
                 error = form._errors.setdefault('name', ErrorList())
-                error.append('Needed for submission!')
-                if not self.object.name and not self.object.current_files:
-                    error = form._errors.setdefault('text', ErrorList())
-                    error.append('Please upload Images or add Text to submit.')
+                error.append('Name is required!')
                 return super(SubmissionUpdateView, self).form_invalid(form)
+            if not self.object.text and not self.object.current_files:
+                error = form._errors.setdefault('text', ErrorList())
+                error.append('Please upload images or add text to submit.')
+                return super(SubmissionUpdateView, self).form_invalid(form)
+            # Mark as submitted
+            self.object.submitted_at = datetime.now()
+            self.object.save()
+            # Show success message
+            from mysite.context_processors import get_site_config
+            if get_site_config('REQUIRE_APPROVAL', False):
+                messages.success(self.request, 'Thank you! A moderator will publish your submission soon.')
+            else:
+                messages.success(self.request, 'Thank you for your submission!')
+            # Clear session so user can make another submission
+            if 'submission_id' in self.request.session:
+                del self.request.session['submission_id']
+            return HttpResponseRedirect('/')
 
 
         response = super(SubmissionUpdateView, self).form_valid(form)

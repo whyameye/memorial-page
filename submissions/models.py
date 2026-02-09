@@ -12,7 +12,7 @@ class Submission(models.Model):
     name = models.CharField(max_length=200, blank=True, null=True, verbose_name='Name (required)')
     email = models.CharField(max_length=200, blank=True, null=True, verbose_name='Email (optional, not public)')
 
-    text = models.TextField(blank=True, verbose_name='Story or memory you\'d like to share(required if no pictures)')
+    text = models.TextField(blank=True, verbose_name='Story or memory you\'d like to share (required if no photos)')
 
     def get_absolute_url(self):
         return reverse('submission-edit', kwargs={'pk': self.id})

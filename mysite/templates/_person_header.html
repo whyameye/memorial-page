@@ -3,13 +3,13 @@
 <!-- Clean Minimal Theme Header -->
 <div class="header-section text-center mb-5">
   <div class="container">
-    <img src="{% static PERSON_IMAGE %}" class="img-fluid mb-4" style="max-width: 120px;"/>
+    <a href="/"><img src="{% static PERSON_IMAGE %}" class="img-fluid mb-4" style="max-width: 120px;"/></a>
     <h1><a href="/">{{ SITE_TITLE }}</a></h1>
     <p class="subtitle mb-1">{{ SITE_SUBTITLE }}</p>
     {% if SITE_DESCRIPTION %}<p class="description">{{ SITE_DESCRIPTION }}</p>{% endif %}
     <div class="mt-4">
       <a href="{% url 'submit' %}" class="btn btn-primary">
-        Submit Story or Pictures
+        Submit Story or Photos
       </a>
     </div>
   </div>
@@ -19,7 +19,7 @@
 <!-- Warm Elegant Theme Header -->
 <div class="header-section text-center mb-5">
   <div class="container">
-    <img src="{% static PERSON_IMAGE %}" class="img-fluid mb-4" style="max-width: 140px;"/>
+    <a href="/"><img src="{% static PERSON_IMAGE %}" class="img-fluid mb-4" style="max-width: 140px;"/></a>
     <h1 class="mb-2"><a href="/">{{ SITE_TITLE }}</a></h1>
     <p class="subtitle mb-2">{{ SITE_SUBTITLE }}</p>
     {% if SITE_DESCRIPTION %}<p class="description mb-0">{{ SITE_DESCRIPTION }}</p>{% endif %}
@@ -40,12 +40,12 @@
       <div class="col-md-6 col-lg-4">
         <h4 class="fw-light">{{ SITE_SUBTITLE }}</h4>
         {% if SITE_DESCRIPTION %}<p class="opacity-75">{{ SITE_DESCRIPTION }}</p>{% endif %}
-        <img src="{% static PERSON_IMAGE %}" class="img-fluid rounded-circle mb-3" style="max-width: 150px;"/>
+        <a href="/"><img src="{% static PERSON_IMAGE %}" class="img-fluid rounded-circle mb-3" style="max-width: 150px;"/></a>
       </div>
     </div>
     <div class="mt-3">
       <a href="{% url 'submit' %}" class="btn btn-light btn-lg px-4">
-        <i class="bi bi-plus-circle me-2"></i>Submit Story or Pictures
+        <i class="bi bi-plus-circle me-2"></i>Submit Story or Photos
       </a>
     </div>
   </div>

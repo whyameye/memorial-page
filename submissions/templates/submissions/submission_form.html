@@ -7,6 +7,49 @@
   <link rel="stylesheet" href="{% static 'css/dropzone.css' %}" />
   <style>
     .form-group { margin-bottom: 1.5rem; }
+    .dropzone .dz-remove {
+      color: #c00;
+      font-weight: bold;
+    }
+    /* Keep add-more box visible after uploads */
+    .dropzone.dz-started .dz-message.add-more-box {
+      display: inline-block !important;
+    }
+    /* Use flexbox to push add-more box to the right */
+    .dropzone {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .dropzone .add-more-box {
+      order: 9999;
+    }
+    /* Add more photos box */
+    .dropzone .add-more-box {
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+      width: 120px;
+      height: 120px;
+      border: 2px dashed #999;
+      border-radius: 20px;
+      cursor: pointer;
+      text-align: center;
+      color: #999;
+    }
+    .dropzone .add-more-box:hover {
+      border-color: #666;
+      color: #666;
+    }
+    .dropzone .add-more-box i {
+      font-size: 36px;
+      margin-top: 30px;
+    }
+    .dropzone .add-more-box span {
+      display: block;
+      font-size: 12px;
+      margin-top: 5px;
+    }
   </style>
 {% endblock %}
 
@@ -18,7 +61,7 @@
 <script src="{% static 'js/dropzone.js' %}"></script>
 <script>
 Dropzone.options.dropzoneFiles = {};
-Dropzone.options.dropzoneFiles['maxFilesize'] = 10;
+Dropzone.options.dropzoneFiles['maxFilesize'] = 50;
 Dropzone.options.dropzoneFiles['acceptedFiles'] = 'image/*';
 Dropzone.options.dropzoneFiles['dictDefaultMessage'] = 'Drag & Drop or Click to add Images';
 Dropzone.options.dropzoneFiles['dictRemoveFile'] = 'X';
@@ -31,9 +74,13 @@ Dropzone.options.dropzoneFiles['addedfile'] = function(file, div) {
   }
 };
 Dropzone.options.dropzoneFiles['removedfile'] = function(file) {
-  $.post(file.removeLink, {});
+  fetch(file.removeLink, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+    }
+  });
   file.previewElement.parentNode.removeChild(file.previewElement);
-  console.log(file);
   return true;
 };
 Dropzone.options.dropzoneFiles['success'] = function(file, response) {
@@ -84,16 +131,20 @@ Dropzone.options.dropzoneFiles['init'] = function() {
       <i class="bi bi-check-circle me-2"></i>Your submission has been received. Thank you!
     </div>
   {% else %}
-    <p class="text-muted">Upload pictures, add your story, then click <b>Submit</b> when ready.</p>
+    <p class="text-muted">Upload photos, add your story, then click <b>Submit</b> when ready.</p>
   {% endif %}
   <hr />
   <div class="row justify-content-center">
     <div class="col-sm-8 col-md-6">
-      <label class="form-label">Pictures <small class="text-muted fw-normal">File size: up to 10MB</small></label>
+      <label class="form-label">Photos <small class="text-muted fw-normal">File size: up to 50MB</small></label>
       <form action="{% url 'jfu-upload' pk=form.instance.pk %}" method="POST" class="dropzone" id="dropzone-files">
         {% csrf_token %}
         <div class="fallback">
           <input name="file" type="file" multiple class="form-control" />
+        </div>
+        <div class="add-more-box dz-message">
+          <i class="bi bi-plus-lg"></i>
+          <span>Add photos</span>
         </div>
       </form>
     </div>

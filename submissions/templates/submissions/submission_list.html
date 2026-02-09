@@ -2,6 +2,59 @@
 
 {% load md2 %}
 
+{% block styles %}
+<style>
+  .carousel-inner {
+    {% if THEME == "warm-elegant" %}
+    background: linear-gradient(180deg, #f5f0eb 0%, #faf8f5 100%);
+    {% elif THEME == "clean-minimal" %}
+    background-color: #fafafa;
+    {% else %}
+    background: linear-gradient(135deg, {{ HEADER_GRADIENT_START|default:"#667eea" }} 0%, {{ HEADER_GRADIENT_END|default:"#764ba2" }} 100%);
+    {% endif %}
+  }
+  .carousel-item img {
+    max-height: 70vh;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    opacity: 0.8;
+  }
+  .carousel-control-prev { left: 10px; }
+  .carousel-control-next { right: 10px; }
+  .carousel-control-prev:hover,
+  .carousel-control-next:hover {
+    opacity: 1;
+    background-color: rgba(0,0,0,0.7);
+  }
+  .carousel-counter {
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
+    {% if THEME == "warm-elegant" %}
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: #7a6f68;
+    {% elif THEME == "clean-minimal" %}
+    font-family: 'Inter', sans-serif;
+    color: #6b7280;
+    {% else %}
+    color: #666;
+    {% endif %}
+  }
+</style>
+{% endblock %}
+
 {% block body %}
     {% for submission in object_list %}
     {% if not forloop.first %}
@@ -10,7 +63,7 @@
     <div class="submission">
       <div class="card p-4">
             {% if submission.current_files %}
-              <div id="carousel-{{submission.pk}}" class="carousel slide mb-3" data-bs-ride="carousel">
+              <div id="carousel-{{submission.pk}}" class="carousel slide mb-3" data-bs-ride="false">
                 <div class="carousel-inner rounded">
                   {% for image in submission.current_files %}
                   <div class="carousel-item {% if forloop.first %}active{% endif %}">
@@ -27,6 +80,9 @@
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Next</span>
                 </button>
+                <div class="carousel-counter">
+                  <span class="current">1</span> of {{ submission.current_files|length }}
+                </div>
                 {% endif %}
               </div>
             {% endif %}
@@ -58,4 +114,23 @@
       </div>
     </div>
     {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.querySelectorAll('.carousel').forEach(function(carousel) {
+  carousel.addEventListener('slid.bs.carousel', function(e) {
+    var counter = this.querySelector('.carousel-counter .current');
+    if (counter) {
+      var items = this.querySelectorAll('.carousel-item');
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].classList.contains('active')) {
+          counter.textContent = i + 1;
+          break;
+        }
+      }
+    }
+  });
+});
+</script>
 {% endblock %}
