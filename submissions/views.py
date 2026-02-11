@@ -12,7 +12,7 @@ from .models import Submission, Image, Link
 from django.forms.models import ModelForm, inlineformset_factory
 from django.forms.utils import ErrorList
 from django import forms
-from datetime import datetime
+from django.utils import timezone
 from django.contrib import messages
 from extra_views import InlineFormSet
 from extra_views.advanced import UpdateWithInlinesView
@@ -72,7 +72,7 @@ class SubmissionForm(ModelForm):
     def save(self, commit=True):
         x = super(SubmissionForm, self).save(commit=False)
         if 'send' in self.data:
-            x.submitted_at = datetime.now()
+            x.submitted_at = timezone.now()
         if commit:
             x.save()
         return x
@@ -129,7 +129,7 @@ class SubmissionUpdateView(SubmissionPasswordRequiredMixin, UpdateWithInlinesVie
                 error.append('Please upload images or add text to submit.')
                 return super(SubmissionUpdateView, self).form_invalid(form)
             # Mark as submitted
-            self.object.submitted_at = datetime.now()
+            self.object.submitted_at = timezone.now()
             self.object.save()
             # Show success message
             from mysite.context_processors import get_site_config

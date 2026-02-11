@@ -39,3 +39,7 @@ FOOTER_TEXT = "Photo uploads and texts by their respective authors."
 # Contact email (displayed in footer, obfuscated against spam bots)
 # CONTACT_EMAIL = "someone@example.com"
 # CONTACT_PROMPT = "Questions?"
+
+
+# Optional: Override server timezone (auto-detected by default)
+# TIME_ZONE = "America/New_York"

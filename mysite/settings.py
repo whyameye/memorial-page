@@ -33,7 +33,21 @@ BASE_DIR = PACKAGE_ROOT
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = "UTC"
+def _detect_timezone():
+    try:
+        with open('/etc/timezone') as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        pass
+    try:
+        import os
+        link = os.readlink('/etc/localtime')
+        return link.split('zoneinfo/')[-1]
+    except (OSError, IndexError):
+        pass
+    return 'UTC'
+
+TIME_ZONE = getattr(site_config, 'TIME_ZONE', None) or _detect_timezone()
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html

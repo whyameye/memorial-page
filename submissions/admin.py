@@ -3,7 +3,7 @@ from .models import Submission, Image, Link
 from django.core.exceptions import PermissionDenied
 from django_object_actions import DjangoObjectActions
 from django.contrib.admin import SimpleListFilter
-from datetime import datetime
+from django.utils import timezone
 
 class ModerationFilter(SimpleListFilter):
     title = 'Accepted'
@@ -40,7 +40,7 @@ class SubmissionAdmin(DjangoObjectActions, admin.ModelAdmin):
     def approve_obj(self, request, obj):
         if not self.has_change_permission(request):
             raise PermissionDenied
-        obj.accepted_at=datetime.now()
+        obj.accepted_at=timezone.now()
         obj.accepted_by=request.user
         obj.save()
         self.message_user(request, "Successfully marked submissions as accepted.")
