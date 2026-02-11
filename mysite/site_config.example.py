@@ -43,3 +43,8 @@ FOOTER_TEXT = "Photo uploads and texts by their respective authors."
 
 # Optional: Override server timezone (auto-detected by default)
 # TIME_ZONE = "America/New_York"
+
+# Email notification when someone submits (no email sent if not set)
+# NOTIFICATION_EMAIL = "you@example.com"
+# NOTIFICATION_FROM = "memorial@example.com"
+# SENDMAIL_COMMAND = "/usr/sbin/sendmail"  # or path to custom sendmail wrapper
