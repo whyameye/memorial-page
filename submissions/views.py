@@ -211,12 +211,6 @@ class SubmissionUpdateView(SubmissionPasswordRequiredMixin, UpdateWithInlinesVie
             self.object.save()
             # Send notification email
             send_submission_notification(self.object)
-            # Show success message
-            from mysite.context_processors import get_site_config
-            if get_site_config('REQUIRE_APPROVAL', False):
-                messages.success(self.request, 'Thank you! A moderator will publish your submission soon.')
-            else:
-                messages.success(self.request, 'Thank you for your submission!')
             # Clear session so user can make another submission
             if 'submission_id' in self.request.session:
                 del self.request.session['submission_id']
@@ -287,7 +281,6 @@ def delete_submission(request, pk):
             submission.delete()
             # Clear session
             del request.session['submission_id']
-            messages.success(request, 'Your submission has been deleted.')
     except Submission.DoesNotExist:
         pass
     return HttpResponseRedirect('/')
