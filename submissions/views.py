@@ -170,6 +170,8 @@ class SubmissionForm(ModelForm):
 
 
 class SubmissionListView(ListView):
+    paginate_by = 10
+
     def get_queryset(self):
         from mysite.context_processors import get_site_config
         if get_site_config('REQUIRE_APPROVAL', False):

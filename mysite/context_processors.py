@@ -25,4 +25,5 @@ def site_settings(request):
         'CONTACT_EMAIL_DOMAIN': get_site_config('CONTACT_EMAIL', '').split('@')[1] if '@' in get_site_config('CONTACT_EMAIL', '') else '',
         'FOOTER_TEXT': get_site_config('FOOTER_TEXT', ''),
         'CONTACT_PROMPT': get_site_config('CONTACT_PROMPT', 'Questions?'),
+        'DONATION_TEXT': get_site_config('DONATION_TEXT', ''),
     }

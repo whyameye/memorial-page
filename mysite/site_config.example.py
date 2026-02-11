@@ -44,6 +44,9 @@ FOOTER_TEXT = "Photo uploads and texts by their respective authors."
 # Optional: Override server timezone (auto-detected by default)
 # TIME_ZONE = "America/New_York"
 
+# Optional: Donation text in footer (supports HTML for links)
+# DONATION_TEXT = 'In lieu of flowers, please consider a <a href="https://example.com" target="_blank">donation to Example Charity</a>'
+
 # Email notification when someone submits (no email sent if not set)
 # NOTIFICATION_EMAIL = "you@example.com"
 # NOTIFICATION_FROM = "memorial@example.com"
