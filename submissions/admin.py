@@ -10,9 +10,9 @@ class ModerationFilter(SimpleListFilter):
     parameter_name = 'accepted'
 
     def lookups(self, request, model_admin):
-        return (('unsent', 'Noch nicht abgesendet',),
-                ('sent_not_accepted', 'Abgeschickt und nicht akzeptiert',),
-                ('sent_accepted', 'Abgeschickt und akzeptiert',),)
+        return (('unsent', 'Not yet submitted',),
+                ('sent_not_accepted', 'Submitted, not approved',),
+                ('sent_accepted', 'Submitted and approved',),)
 
     def queryset(self, request, queryset):
         submitted_at__isnull = self.value() == 'unsent'
