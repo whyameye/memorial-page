@@ -26,4 +26,5 @@ def site_settings(request):
         'FOOTER_TEXT': get_site_config('FOOTER_TEXT', ''),
         'CONTACT_PROMPT': get_site_config('CONTACT_PROMPT', 'Questions?'),
         'DONATION_TEXT': get_site_config('DONATION_TEXT', ''),
+        'PASSWORD_HINT': get_site_config('PASSWORD_HINT', ''),
     }

@@ -9,6 +9,8 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Password to access the submission form (share with family/friends)
 SUBMISSION_PASSWORD = "changeme"
+# Optional hint shown on the password page
+# PASSWORD_HINT = "Ask a family member"
 
 SITE_TITLE = "Memorial Page"
 SITE_SUBTITLE = "In Loving Memory"
